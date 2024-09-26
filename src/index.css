@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+    .pdf-content {
+        width: 210mm;
+        height: 297mm;
+        padding: 10mm;
+    }
+
+    .pdf-section {
+        page-break-inside: avoid;
+        page-break-after: always;
+    }
+}
+
+
+.active {
+    background-color: rgba(255, 255, 255, 0.213);
+    
+}

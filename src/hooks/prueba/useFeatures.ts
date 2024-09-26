@@ -1,32 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Feature, MobileFeature, WebApiFeature } from '../types/types';
+import { Feature, MobileFeature, WebApiFeature } from '../../types/pruebaType';
 
-function calculateProgress(feature: Feature): string {
-  const fields = ['Strategy', 'Mapping', 'Construction', 'Stabilization'];
-  if (feature.developmentType === 'api') {
-    fields.splice(1, 1); // Remove 'Mapping' for API
-  }
-
-  let sum = 0;
-  let count = 0;
-
-  if (feature.developmentType === 'mobile') {
-    fields.forEach(field => {
-      const lowerField = field.toLowerCase();
-      sum += Number((feature as MobileFeature)[`android${field}`] || 0);
-      sum += Number((feature as MobileFeature)[`ios${field}`] || 0);
-      count += 2;
-    });
-  } else {
-    fields.forEach(field => {
-      const lowerField = field.toLowerCase();
-      sum += Number((feature as WebApiFeature)[lowerField] || 0);
-      count += 1;
-    });
-  }
-
-  return (sum / (count * 100) * 100).toFixed(2);
-}
 
 export function useFeatures() {
   const [features, setFeatures] = useState<Feature[]>([]);

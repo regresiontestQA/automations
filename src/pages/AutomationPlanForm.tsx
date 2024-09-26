@@ -136,43 +136,66 @@ export default function AutomationPlanForm() {
     field: string,
     value: string | boolean
   ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: prev[section].map((item, i) => {
-        if (i === index) {
-          if (typeof item === "string") {
-            return value
-          } else {
-            return { ...item, [field]: value }
-          }
-        }
-        return item
-      }),
-    }))
-  }
+    setFormData((prev) => {
+      const sectionData = prev[section];
+      if (Array.isArray(sectionData)) {
+        return {
+          ...prev,
+          [section]: sectionData.map((item, i) => {
+            if (i === index) {
+              if (typeof item === "string") {
+                return value as string;
+              } else if (typeof item === "object") {
+                return { ...item, [field]: value };
+              }
+            }
+            return item;
+          }),
+        };
+      }
+      return prev;
+    });
+  };
 
   const addArrayItem = (section: keyof FormData) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: [
-        ...prev[section],
-        section === "documentationReceived"
-          ? { type: "", received: false, comments: "" }
-          : section === "risks"
-          ? { description: "", severity: "", impact: "", contingency: "" }
-          : section === "devices"
-          ? { name: "", os: "", version: "" }
-          : "",
-      ],
-    }))
-  }
+    setFormData((prev) => {
+      const sectionData = prev[section];
+      if (Array.isArray(sectionData)) {
+        let newItem;
+        switch (section) {
+          case "documentationReceived":
+            newItem = { type: "", received: false, comments: "" };
+            break;
+          case "risks":
+            newItem = { description: "", severity: "", impact: "", contingency: "" };
+            break;
+          case "devices":
+            newItem = { name: "", os: "", version: "" };
+            break;
+          default:
+            newItem = "";
+        }
+        return {
+          ...prev,
+          [section]: [...sectionData, newItem],
+        };
+      }
+      return prev;
+    });
+  };
 
   const removeArrayItem = (section: keyof FormData, index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: prev[section].filter((_, i) => i !== index),
-    }))
-  }
+    setFormData((prev) => {
+      const sectionData = prev[section];
+      if (Array.isArray(sectionData)) {
+        return {
+          ...prev,
+          [section]: sectionData.filter((_, i) => i !== index),
+        };
+      }
+      return prev;
+    });
+  };
 
   const handleProjectInfoChange = (key: keyof FormData['projectInfo'], value: string) => {
     setFormData(prev => ({

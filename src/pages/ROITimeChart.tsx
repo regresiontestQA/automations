@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -41,8 +41,8 @@ export default function ROITimeChart() {
 
       roiData.push({
         executions,
-        manual: totalManualTime / 3600, // Convertir a horas
-        automated: totalAutomatedTime / 3600 // Convertir a horas
+        manual: totalManualTime / 3600,
+        automated: totalAutomatedTime / 3600
       });
 
       if (breakEvenPoint !== 0 && executions >= breakEvenPoint + 10) {
@@ -53,7 +53,7 @@ export default function ROITimeChart() {
     return { roiData, breakEvenPoint, isAutomatedFaster };
   }, [data.manualTimePerExecution, data.automatedTimePerExecution, data.setupTime]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData(prevData => ({
       ...prevData,
@@ -67,7 +67,7 @@ export default function ROITimeChart() {
     return (lastDataPoint.manual - lastDataPoint.automated).toFixed(2);
   }, [roiData, breakEvenPoint]);
 
-  const secondsToHoursMinutes = (seconds) => {
+  const secondsToHoursMinutes = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     return `${hours} horas y ${minutes} minutos`;
@@ -152,7 +152,12 @@ export default function ROITimeChart() {
               <YAxis label={{ value: 'Tiempo (horas)', angle: -90, position: 'insideLeft' }} className="text-xs" />
               <Tooltip 
                 contentStyle={{ backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px' }}
-                formatter={(value) => [`${value.toFixed(2)} horas`, undefined]}
+                formatter={(value: number | string) => {
+                  if (typeof value === 'number') {
+                    return [`${value.toFixed(2)} horas`, undefined];
+                  }
+                  return [value, undefined];
+                }}
               />
               <Legend />
               <Line type="monotone" dataKey="manual" stroke="#8884d8" name="Manual" strokeWidth={2} />

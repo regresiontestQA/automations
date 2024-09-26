@@ -1,5 +1,5 @@
 import React from "react";
-import { Feature } from "../../types/types";
+import { Feature, WebApiFeature } from "../../types/pruebaType";
 import { Input } from "./../ui/Input";
 import { Select } from "./../ui/Select";
 import TagInput from "../Inventario/TagInput";

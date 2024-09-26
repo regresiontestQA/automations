@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+/*import { useState, useMemo, useEffect } from 'react';
 import { BarChart, Bar, PieChart, Pie, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList, Cell } from 'recharts';
 import { ChevronDownIcon, FilterIcon, RotateCcwIcon } from 'lucide-react';
 
@@ -39,7 +39,7 @@ const ERROR_COLORS = {
   "Falla": "#DC2626",
 };
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active , payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-4 border border-gray-200 rounded shadow-lg">
@@ -591,4 +591,4 @@ export default function ExecutionDashboard() {
       </div>
     </div>
   );
-}
+}*/

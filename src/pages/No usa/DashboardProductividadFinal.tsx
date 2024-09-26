@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+/*import { useState, useEffect, useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -23,7 +23,6 @@ import {
 import { Feature } from "../../types/types";
 import { AutomationPlan } from "../AutomationPlan";
 
-
 interface FeatureProgress {
   feature: string;
   progress: number;
@@ -38,7 +37,10 @@ export default function DashboardProductividadFinal() {
     robot: "",
     ahorro: "",
   });
-  const [total, setTotal] = useState({ahorro:"", porcentaje:""})
+  const [total, setTotal] = useState<{ ahorro: string; porcentaje: string }>({
+    ahorro: "",
+    porcentaje: "",
+  });
 
   useEffect(() => {
     const featuresData = localStorage.getItem("features");
@@ -200,7 +202,11 @@ export default function DashboardProductividadFinal() {
       totalRobotMinutos
     );
 
-    setTotal(totalAhorro)
+    setTotal({
+      ahorro: totalAhorro.ahorro.toString(),
+      porcentaje: totalAhorro.porcentaje.toString(),
+    });
+
     setDataIos({
       manual: formatearTiempo(androidManualTotal),
       robot: formatearTiempo(iosRobotTotal),
@@ -299,9 +305,7 @@ export default function DashboardProductividadFinal() {
     const result: FeatureProgress[] = Array.from(featureMap).map(
       ([feature, progresses]) => ({
         feature,
-        progress: (
-          progresses.reduce((sum, val) => sum + val, 0) / progresses.length
-        ).toFixed(2),
+        progress: Number((progresses.reduce((sum, val) => sum + val, 0) / progresses.length).toFixed(2))
       })
     );
 
@@ -316,7 +320,7 @@ export default function DashboardProductividadFinal() {
         Informe de Seguimiento de Proyecto de Pruebas
       </h1>
 
-      {/* Información General del Proyecto */}
+
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">
           Información General Proyecto
@@ -341,7 +345,7 @@ export default function DashboardProductividadFinal() {
         </div>
       </div>
 
-      {/* Información Detallada del Proyecto */}
+  
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">
           Información Detallada Proyecto
@@ -374,7 +378,7 @@ export default function DashboardProductividadFinal() {
         </div>
       </div>
 
-      {/* Gráficos */}
+   
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow-md p-4">
           <h3 className="text-lg font-semibold mb-2">Progreso Android</h3>
@@ -388,11 +392,11 @@ export default function DashboardProductividadFinal() {
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
               >
                 {progressDataAndroid.map((entry, index) => (
                   <Cell
-                    key={`cell-${index}`}
+                    key={`cell-${entry.name}`}
                     fill={COLORS[index % COLORS.length]}
                   />
                 ))}
@@ -414,11 +418,11 @@ export default function DashboardProductividadFinal() {
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                label={({  percent }) => `${(percent * 100).toFixed(0)}%`}
               >
                 {progressDataIos.map((entry, index) => (
                   <Cell
-                    key={`cell-${index}`}
+                    key={`cell-${entry.name}`}
                     fill={COLORS[index % COLORS.length]}
                   />
                 ))}
@@ -452,7 +456,7 @@ export default function DashboardProductividadFinal() {
         </div>
       </div>
 
-      {/* Gráfica: Avance en cada etapa de construcción */}
+  
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow-md p-4 mb-6">
           <h3 className="text-lg font-semibold mb-2">
@@ -499,7 +503,7 @@ export default function DashboardProductividadFinal() {
         </div>
       </div>
 
-      {/* Nueva gráfica: Avance de construcción total por feature */}
+  
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h3 className="text-lg font-semibold mb-2">
           Avance de Construcción por Feature
@@ -542,22 +546,7 @@ export default function DashboardProductividadFinal() {
         </ResponsiveContainer>
       </div>
 
-      {/* Nueva gráfica: Ejecuciones por versión */}
-      {/* <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <h3 className="text-lg font-semibold mb-2">Ejecuciones por Versión</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={executionsByVersion}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="version" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#82ca9d" name="Número de Ejecuciones" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-*/}
-      {/* Gráfico de Tiempo de Ejecución */}
+
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">
           Tiempo de Ejecución Android: Manual vs Robot
@@ -586,7 +575,7 @@ export default function DashboardProductividadFinal() {
         </ResponsiveContainer>
       </div>
 
-      {/* Gráfico de Tiempo de Ejecución */}
+  
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">
           Tiempo de Ejecución iOS: Manual vs Robot
@@ -617,4 +606,4 @@ export default function DashboardProductividadFinal() {
       </div>
     </div>
   );
-}
+}*/

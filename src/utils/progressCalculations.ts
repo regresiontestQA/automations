@@ -1,8 +1,16 @@
 
-import { Feature } from "../types/types";
+type Platform = "android" | "ios";
+type Field = "Strategy" | "Mapping" | "Construction" | "Stabilization";
+
+export type Feature = {
+  [K in `${Platform}${Field}`]?: string;
+} & {
+  androidProgress?: string;
+  iosProgress?: string;
+};
 
 export const calculateProgress = (feature: Feature, platform: "android" | "ios") => {
-  const fields = ["Strategy", "Mapping", "Construction", "Stabilization"];
+  const fields: ("Strategy" | "Mapping" | "Construction" | "Stabilization")[] = ["Strategy", "Mapping", "Construction", "Stabilization"];
   const sum = fields.reduce(
     (acc, field) => acc + Number(feature[`${platform}${field}`] || 0),
     0

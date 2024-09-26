@@ -157,8 +157,10 @@ export const useExecutionData = () => {
 
   const getTotalExecutions = () => getExecutionsByDate().reduce((sum, item) => sum + item.count, 0);
 
-  const getErrorLineChartData = () => {
+  const getErrorLineChartData = (): ChartData[] => {
     const data: { [key: string]: { [key: string]: number } } = {};
+    const errorTypes = new Set<string>();
+  
     filteredData.forEach((item) => {
       const date = item.startDate.split('T')[0];
       if (!data[date]) {
@@ -170,13 +172,21 @@ export const useExecutionData = () => {
             data[date][scenario.errorType] = 0;
           }
           data[date][scenario.errorType]++;
+          errorTypes.add(scenario.errorType);
         }
       });
     });
-    return Object.entries(data).map(([date, errors]) => ({
-      date,
+  
+    const chartData: ChartData[] = Object.entries(data).map(([date, errors]) => ({
+      name: date,
       ...errors,
+      total: Object.values(errors).reduce((sum, count) => sum + count, 0),
     }));
+  
+    // Sort the data by date
+    chartData.sort((a, b) => a.name.localeCompare(b.name));
+  
+    return chartData;
   };
 
   const getExecutionsByVersion = () => {

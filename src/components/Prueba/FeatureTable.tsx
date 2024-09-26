@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Feature } from "../../types/types";
+import { Feature } from "../../types/pruebaType";
 import ProgressBar from "../Inventario/ProgressBar";
 import { MobileFeature, WebApiFeature } from "../../types/pruebaType";
 
